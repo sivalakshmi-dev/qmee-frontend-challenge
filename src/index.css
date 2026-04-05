@@ -1,0 +1,20 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+
+
+
+
+
+
+
+
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css');
+
+/* Custom fix for background */
+#root {
+    background-color: pink;
+    min-height: 100vh;
+}
