@@ -95,7 +95,7 @@ const App = () => {
                 </p>
               </div>
             ) : (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="pt-4 pb-40 ...">
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="pt-4 !mb-40 block">
                 <h2 className="text-5xl font-bold text-slate-800 mb-3 tracking-tight">Welcome to QMee</h2>
                 <p className="text-gray-500 text-lg font-medium italic">Ask me anything, and I'm here to help you.</p>
               </motion.div>
