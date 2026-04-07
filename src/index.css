@@ -15,6 +15,10 @@
 
 /* Custom fix for background */
 #root {
-    background-color: pink;
+    background-color: red;
     min-height: 100vh;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
 }
