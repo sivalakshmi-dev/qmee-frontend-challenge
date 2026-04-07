@@ -1,111 +1,143 @@
-import React, { useState } from "react";
-import "./index.css";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import "./index.css";
 
-function App() {
-  const [showSearch, setShowSearch] = useState(false);
+const App = () => {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [isStarted, setIsStarted] = useState(false);
+  const [isChatting, setIsChatting] = useState(false);
+  const chatEndRef = useRef(null);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleSend = (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    if (!isChatting) setIsChatting(true);
+
+    const userMessage = { role: "user", text: input, time: "a few seconds ago" };
+    setMessages([...messages, userMessage]);
+    setInput("");
+
+    setTimeout(() => {
+      setMessages((prev) => [...prev, {
+        role: "ai",
+        text: "I am QMee, your assistant. How can I help you today?",
+        time: "just now"
+      }]);
+    }, 1000);
+  };
+
+  const resetToHome = () => {
+    setIsStarted(false);
+    setIsChatting(false);
+    setMessages([]);
+  };
 
   return (
-    <div className="min-h-screen bg-[#fcfcfd] text-slate-900 font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#fcfcfd] text-slate-900 font-sans flex flex-col items-center">
 
-      {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 flex justify-between items-center px-10 py-5 backdrop-blur-xl bg-white/60 border-b border-gray-100">
-        <div className="text-2xl font-black tracking-tighter text-purple-600 cursor-default group">
-          Q<span className="transition-colors duration-300 group-hover:text-pink-500">Mee</span>
-        </div>
+      {isChatting && (
+        <header className="w-full max-w-5xl flex justify-between items-center px-8 py-5 sticky top-0 bg-white/80 backdrop-blur-md z-50 border-b border-gray-50">
+          <div className="flex gap-4 items-center">
+            <button onClick={resetToHome} className="text-gray-400 hover:text-blue-600 transition-all transform hover:scale-110">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+            </button>
+            <button onClick={() => setMessages([])} className="text-gray-400 hover:text-blue-600 transition-all transform hover:scale-110">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+            </button>
+            <a href="https://linkedin.com/in/sivalakshmi-palagiri" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-blue-600 transition-all">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
+            </a>
+          </div>
+          <div className="group cursor-default text-3xl font-black tracking-tighter">
+            <span className="text-blue-600">Q</span>
+            <span className="text-blue-600 group-hover:text-pink-500 transition-colors">Mee</span>
+          </div>
+        </header>
+      )}
 
-        <div className="space-x-8 hidden md:flex font-medium text-gray-500">
-          <a href="#" className="hover:text-purple-600 transition-colors">Home</a>
-          <a href="#" className="hover:text-purple-600 transition-colors">Features</a>
-          <a href="#" className="hover:text-purple-600 transition-colors">Contact</a>
-        </div>
-        <button className="bg-slate-900 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-slate-800 transition">
-          Sign In
-        </button>
-      </nav>
+      <main className={`flex-1 w-full max-w-3xl flex flex-col items-center ${isChatting ? 'justify-start pt-10' : 'justify-center'} p-6`}>
 
-      {/* Hero Section */}
-      <header className="relative pt-40 pb-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-6xl md:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-slate-900 to-slate-500"
-          >
-            Intelligence meets <br /> modern design.
-          </motion.h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-lg md:text-xl text-gray-500 mb-10 max-w-2xl mx-auto leading-relaxed"
-          >
-            Experience the next generation of AI-driven interfaces built with precision and speed.
-          </motion.p>
+        {!isChatting && (
+          <div className="flex flex-col items-center text-center w-full space-y-6">
 
-          <div className="flex flex-col items-center gap-6">
-            <motion.button
-              onClick={() => setShowSearch(!showSearch)}
-              className="px-8 py-4 bg-purple-600 text-white rounded-2xl font-semibold shadow-xl shadow-purple-200 hover:bg-purple-700 hover:scale-[1.02] transition-all active:scale-95"
-            >
-              {showSearch ? "Close Search" : "Get Started →"}
-            </motion.button>
 
-            {/* Animated Search Bar */}
+            <div className="group cursor-default text-6xl font-black tracking-tighter transition-all">
+              <span className="text-blue-600">Q</span>
+              <span className="text-blue-600 group-hover:text-pink-500 transition-colors duration-300">Mee</span>
+            </div>
+
+            <div className="w-32 h-32 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-white transform transition-transform hover:scale-105">
+              <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
+            </div>
+
+            <div className="flex flex-col items-center group relative">
+              <a href="https://linkedin.com/in/sivalakshmi-palagiri" target="_blank" rel="noreferrer" className="bg-white p-2 rounded-lg shadow-md hover:bg-blue-50 text-blue-600 transition-all border border-gray-100">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
+              </a>
+              <span className="absolute -bottom-9 scale-0 group-hover:scale-100 transition-transform bg-gray-800 text-white text-[10px] px-2 py-1 rounded font-bold whitespace-nowrap z-10 shadow-lg">
+                Know about developer
+              </span>
+            </div>
+
+            {!isStarted ? (
+              <div className="flex flex-col items-center pt-4">
+                <button onClick={() => setIsStarted(true)} className="px-10 py-3 bg-white border border-gray-200 rounded-2xl font-bold shadow-sm hover:shadow-md transition-all active:scale-95 text-gray-700 flex items-center gap-2">
+                  <span>→</span> Let's go
+                </button>
+                <p className="mt-16 text-[12px] text-gray-400 max-w-[280px] leading-relaxed">
+                  QMee can generate inaccurate responses. Verify responses through independent sources.
+                </p>
+              </div>
+            ) : (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-2">
+                <h2 className="text-4xl font-bold text-slate-800 mb-2 tracking-tight">Welcome to QMee</h2>
+                <p className="text-gray-500 font-medium italic">Ask me anything, and I'm here to help you.</p>
+              </motion.div>
+            )}
+          </div>
+        )}
+
+        {isChatting && (
+          <div className="w-full space-y-8 pt-4 pb-40 overflow-y-auto scrollbar-hide">
             <AnimatePresence>
-              {showSearch && (
-                <motion.div
-                  initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                  className="w-full max-w-lg mt-4"
-                >
-                  <div className="relative group">
-                    <input
-                      type="text"
-                      placeholder="Ask anything to QMee..."
-                      className="w-full px-6 py-4 bg-white border-2 border-purple-100 rounded-2xl shadow-lg focus:outline-none focus:border-purple-500 transition-all text-lg"
-                      autoFocus
-                    />
-                    <button className="absolute right-3 top-2 bottom-2 px-4 bg-purple-600 text-white rounded-xl text-sm font-bold hover:bg-purple-700 transition-colors">
-                      Search
-                    </button>
+              {messages.map((msg, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex flex-col ${msg.role === 'user' ? 'items-start' : 'items-end'}`}>
+                  <span className="text-[9px] font-bold text-gray-400 mb-1 uppercase tracking-widest">{msg.time}</span>
+                  <div className={`p-4 px-6 rounded-2xl max-w-[85%] shadow-sm ${msg.role === 'user' ? 'bg-white border border-gray-100 text-slate-700 rounded-tl-none' : 'bg-blue-600 text-white rounded-tr-none'}`}>
+                    {msg.text}
                   </div>
                 </motion.div>
-              )}
+              ))}
             </AnimatePresence>
+            <div ref={chatEndRef} />
           </div>
-        </div>
-      </header>
+        )}
 
-      {/* Features Section */}
-      <section className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 px-8 py-20">
-        {[
-          { title: "Fast Performance ⚡", desc: "Built for speed with sub-second response times.", delay: 0.1 },
-          { title: "Modern Design 🎨", desc: "Aesthetic interfaces inspired by the best in tech.", delay: 0.2 },
-          { title: "Responsive 📱", desc: "Flawless experience across all your modern devices.", delay: 0.3 }
-        ].map((item, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: item.delay, duration: 0.6 }}
-            className="group p-8 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all"
-          >
-            <h3 className="text-xl font-bold mb-3 group-hover:text-purple-600 transition-colors">{item.title}</h3>
-            <p className="text-gray-500 leading-relaxed">{item.desc}</p>
-          </motion.div>
-        ))}
-      </section>
-
-      <footer className="py-12 border-t border-gray-100 text-center text-gray-400 text-sm">
-        <p>© 2026 QMee. Crafted for the future.</p>
-      </footer>
+        {(isStarted || isChatting) && (
+          <div className="fixed bottom-0 w-full max-w-3xl p-6 bg-gradient-to-t from-[#fcfcfd] via-[#fcfcfd] to-transparent z-40">
+            <form onSubmit={handleSend} className="relative group">
+              <input
+                type="text" value={input} onChange={(e) => setInput(e.target.value)}
+                placeholder="What's on your mind?"
+                className="w-full p-5 pr-16 bg-white border border-gray-200 rounded-3xl shadow-xl outline-none focus:border-blue-300 transition-all text-slate-700"
+                autoFocus
+              />
+              <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center hover:bg-blue-700 transition-all active:scale-90">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+              </button>
+            </form>
+          </div>
+        )}
+      </main>
     </div>
   );
-}
+};
 
 export default App;
