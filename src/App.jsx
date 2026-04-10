@@ -24,10 +24,9 @@ const qMee_Assistant = {
   };
 
   return (
-    // ఇక్కడ bg-slate-950 వాడాను, ఇది కచ్చితంగా నలుపు రంగుని ఇస్తుంది
+    
     <div className="min-h-screen bg-[#030712] text-white flex flex-col items-center justify-center p-6 font-sans overflow-hidden relative">
 
-      {/* Background Glow Effects */}
       <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 blur-[120px] rounded-full" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/10 blur-[120px] rounded-full" />
 
@@ -37,7 +36,6 @@ const qMee_Assistant = {
         transition={{ duration: 0.8 }}
         className="w-full max-w-4xl space-y-12 text-center z-10"
       >
-        {/* Header Section */}
         <div className="space-y-6">
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
@@ -60,40 +58,9 @@ const qMee_Assistant = {
               <BotMessageSquare className="text-purple-400" size={18} />
               <span>Type: Assistant</span>
             </div>
-<<<<<<< HEAD
-=======
-
-            <div className="relative group inline-block">
-              <a href="https://linkedin.com/in/sivalakshmi-palagiri" target="_blank" rel="noreferrer" className="bg-white p-2.5 rounded-xl shadow-md hover:bg-blue-50 text-blue-600 transition-all border border-gray-100 flex items-center justify-center">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
-              </a>
-              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50 pointer-events-none">
-                <div className="bg-slate-800 text-white text-[11px] px-3 py-1.5 rounded-lg shadow-xl whitespace-nowrap font-semibold tracking-wide">
-                  Know about developer
-                </div>
-              </div>
-            </div>
-
-            {!isStarted ? (
-              <div className="flex flex-col items-center pt-6 w-full max-w-lg">
-                <button onClick={() => setIsStarted(true)} className="px-12 py-3.5 bg-white border border-gray-200 rounded-2xl font-bold shadow-sm hover:shadow-md transition-all active:scale-95 text-gray-700 flex items-center gap-3 mb-12">
-                  <span className="text-xl">→</span> Let's go
-                </button>
-                <p className="text-sm md:text-base text-gray-400 font-medium text-center">
-                  QMee can generate inaccurate responses. Verify responses through independent sources.
-                </p>
-              </div>
-            ) : (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="pt-4 !mb-40 block">
-                <h2 className="text-5xl font-bold text-slate-800 mb-3 tracking-tight">Welcome to QMee</h2>
-                <p className="text-gray-500 text-lg font-medium italic">Ask me anything, and I'm here to help you.</p>
-              </motion.div>
-            )}
->>>>>>> 86be0e708771b087fd934f5546550ab3a209ff4e
           </div>
         </div>
 
-        {/* Code Parser Section */}
         <motion.div
           whileHover={{ y: -5 }}
           className="relative group rounded-3xl border border-white/10 bg-[#0B0F1A]/80 backdrop-blur-2xl overflow-hidden shadow-2xl"
@@ -113,7 +80,6 @@ const qMee_Assistant = {
             <code>{codeSnippet}</code>
           </pre>
 
-          {/* Copy Button */}
           <button
             onClick={handleCopy}
             className="absolute top-16 right-6 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-90"
@@ -132,7 +98,6 @@ const qMee_Assistant = {
           </button>
         </motion.div>
 
-        {/* Action Buttons */}
         <div className="flex flex-col md:flex-row gap-4 justify-center items-center pt-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
