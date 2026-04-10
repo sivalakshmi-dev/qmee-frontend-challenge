@@ -14,11 +14,19 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css');
 
 /* Custom fix for background */
-#root {
+/* #root {
     background-color: red;
     min-height: 100vh;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
+} */
+
+
+
+
+body {
+    margin: 0;
+    background-color: #030712;
 }
